@@ -1,0 +1,44 @@
+{
+  "posts/post-with-code/index.qmd": {
+    "index.html": "45ce3551"
+  },
+  "posts/welcome/index.qmd": {
+    "index.html": "0a09bbb1"
+  },
+  "index.qmd": {
+    "index.html": "c9c05580"
+  },
+  "about.qmd": {
+    "about.html": "6c8e5040"
+  },
+  "posts/hw-0/index.ipynb": {
+    "index.html": "11e1ba98"
+  },
+  "posts/hw-1/index.ipynb": {
+    "index.html": "cee4a238"
+  },
+  "posts/hw-2/index.ipynb": {
+    "index.html": "92994033"
+  },
+  "posts/hw-3/index.ipynb": {
+    "index.html": "8c1756bc"
+  },
+  "posts/hw-4/index.ipynb": {
+    "index.html": "656c459f"
+  },
+  "posts/hw-5/index.ipynb": {
+    "index.html": "abde29ea"
+  },
+  "posts/final-project/index.ipynb": {
+    "index.html": "7adac97d"
+  },
+  "posts/ode-solver/finite-differences-ode.ipynb": {
+    "finite-differences-ode.html": "01d6fc12"
+  },
+  "posts/ode-solver/index.ipynb": {
+    "index.html": "ec2e4179"
+  },
+  "posts/ode-solver/copy/index.ipynb": {
+    "index.html": "8a5d9e19"
+  }
+}

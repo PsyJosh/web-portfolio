@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 49e2d56d-402d-4b86-8c53-fa7931bf8eb5
+      url: 'https://psyjosh.quarto.pub/myblog'
