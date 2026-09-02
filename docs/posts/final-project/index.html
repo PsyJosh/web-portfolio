@@ -164,36 +164,36 @@ ul.task-list li input[type="checkbox"] {
 </blockquote>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/6135e7cf-1-flowchart.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/2398f773-1-flowchart.png" class="img-fluid figure-img"></p>
 <figcaption class="figure-caption">flowchart.png</figcaption>
 </figure>
 </div>
 </section>
 <section id="technical-component-1-mediapipe" class="level2">
 <h2 class="anchored" data-anchor-id="technical-component-1-mediapipe">Technical Component 1: MediaPipe</h2>
-<p>Image 1 <img src="index_files/figure-html/e1c99acc-1-hand.jpg" class="img-fluid" alt="hand.jpg"></p>
-<p>Image 2 <img src="index_files/figure-html/9d74b17e-1-mp_opencv_link.png" class="img-fluid" alt="mp_opencv_link.png"></p>
+<p>Image 1 <img src="index_files/figure-html/2da3d6b4-1-hand.jpg" class="img-fluid" alt="hand.jpg"></p>
+<p>Image 2 <img src="index_files/figure-html/7698ad8b-1-mp_opencv_link.png" class="img-fluid" alt="mp_opencv_link.png"></p>
 <p>MediaPipe is a package by Google which takes in pictures and translates them into coordinates. We will use this package to teach the model how to detect a hand gesture. The idea is that specific gestures will have roughly similar hand shapes and the model will train off that.</p>
 <p>First, MediaPipe is applied to the training data, which is a collection of hand pictures. These are translated through MediaPipe as coordinates and passed to the model with the name of the associated gesture. In the actual program, MediaPipe is connected to OpenCV to translate a hand into coordinates and is synced with a predictive model. This is demonstrated in the main image, with the code in the following image.</p>
 </section>
 <section id="technical-component-2-pytorch" class="level2">
 <h2 class="anchored" data-anchor-id="technical-component-2-pytorch">Technical Component 2: PyTorch</h2>
-<p>Image 1 <img src="index_files/figure-html/a8a5060b-1-model.png" class="img-fluid" alt="model.png"></p>
-<p>Image 2 <img src="index_files/figure-html/a8a5060b-1-model.png" class="img-fluid" alt="validation_graph.png"></p>
+<p>Image 1 <img src="index_files/figure-html/8bcde3e0-1-model.png" class="img-fluid" alt="model.png"></p>
+<p>Image 2 <img src="index_files/figure-html/8bcde3e0-1-model.png" class="img-fluid" alt="validation_graph.png"></p>
 <p>Us getting the coordinates of the hands was a great first step, but we still need to figure out how to train the model! We had to first create some loops to check the name of the file (which would indicate the class it is) and add it to the training data. We also used one-hot-encoded vectors to ensure that the model wouldn’t be confused and think there was some inherent order to the labels. We tried a couple of generic classifiers, like k Nearest Neighbors and Suppport Vector Machines, and our accuracy was actually pretty good, around 90-93%. However, we decided to implement another class, called Background, and this introduced a lot of issues for us. To preface this, we needed to add a background class because the program would sometimes predict a gesture at a high confidence score even though they weren’t actively performing anything. This meant that actions like scratching your nose, resting your face on your hand, etc. could trigger actions like changing the volume or skipping a track! We wanted this to be as practical as possible, which is why we tried to add a background class. When we did this, however, our generic classifier accuracies plummeted, down to around 60-70%! This is most likely because the pictures we used for the background class were extremely varied, since there are a lot of gestureless/idle actions one might do that we wouldn’t want classified as a gesture. We had to switch tracks, and we decided to go with a neural network.</p>
 <p>To create the neural network, we simply used a flatten layer since each coordinate had an x and y part. We then used 4 linear layers to put the whole network together. Of course, when we went through a fully connected linear layer, we used an activation function after each pass, except for the last linear layer. We started off with ReLU, but then switched to LeakyReLU since we found that it had slightly better results. We used Cross Entropy as the loss function, and SGD as the optimizer. We had the learning rate be around 0.005-0.01, and we also had momentum of 0.1, allowing us to avoid being stuck at local minimums. We trained this model for about 300 epochs, and our best validation loss ended up being around 0.22. When we tested our accuracy on our validation set, we got a 95% accuracy score. Again, this was with our background class, so this was miles better than the other classifiers that we used, and we stuck with the neural network.</p>
 </section>
 <section id="technical-component-3-controlling-media" class="level2">
 <h2 class="anchored" data-anchor-id="technical-component-3-controlling-media">Technical Component 3: Controlling Media</h2>
-<p>Image 1 <img src="index_files/figure-html/cb660880-1-media.png" class="img-fluid" alt="media.png"></p>
-<p>Image 2 <img src="index_files/figure-html/ff8017d9-1-mediademo.png" class="img-fluid" alt="mediademo.png"></p>
+<p>Image 1 <img src="index_files/figure-html/87001290-1-media.png" class="img-fluid" alt="media.png"></p>
+<p>Image 2 <img src="index_files/figure-html/8143d144-1-mediademo.png" class="img-fluid" alt="mediademo.png"></p>
 <p>In the above code snippet, we used the <code>platform</code> package and the <code>.system()</code> method to read in the user’s operating system. This outputs <code>'Darwin'</code> from MacOS and <code>'Windows'</code> for Windows, so we used if statements to make sure the proper key commands were being used. We also have a couple of our media functions visibile in the snippet. Using <code>pyautogui.press</code> we can simulate keystroke activity and thus control things like the volume remotely. These functions are stored in our <code>gestures.py</code> file which is imported for the <code>camera.py</code> file to utilize as can be seen in the PyTorch section.</p>
 <p>In the second image, the ‘down’ gesture is being used to lower the volume. The volume slider is active at the bottom of the screen, showing it is being changed.</p>
 </section>
 <section id="technical-component-4-gui-with-pysimplegui" class="level2">
 <h2 class="anchored" data-anchor-id="technical-component-4-gui-with-pysimplegui">Technical Component 4: GUI with <code>PySimpleGui</code></h2>
-<p>Image 1 <img src="index_files/figure-html/beb745da-1-gui.png" class="img-fluid" alt="gui.png"></p>
-<p>Image 2 <img src="index_files/figure-html/8af0af8b-1-camera_link.png" class="img-fluid" alt="camera_link.png"></p>
+<p>Image 1 <img src="index_files/figure-html/e6341ce8-1-gui.png" class="img-fluid" alt="gui.png"></p>
+<p>Image 2 <img src="index_files/figure-html/a8575764-1-camera_link.png" class="img-fluid" alt="camera_link.png"></p>
 <p>The GUI is designed to create a more user-friendly medium to interact with the program. The goal is to communicate more information to the user regarding the use of the program and include modifyable parameters for the user to adjust the sensitivity of the model.</p>
 <p>Information on enabling the camera is initialized as the first possible input. More information regarding the list of recognized gestures is included in a table. The last tab lists hotkeys for the program. The only hotkey implemented was to turn off the camera, or Q.</p>
 <p>The GUI was linked to the <code>Camera</code> class, with an instance of the class being initialized and ran upon clicking the “Turn on camera” button. From there, OpenCV is initialized to enable your camera. This is demonstrated in the second figure.</p>
